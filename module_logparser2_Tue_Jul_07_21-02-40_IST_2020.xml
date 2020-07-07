@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_logparser2" default="compile.module.logparser2">
+  <dirname property="module.logparser2.basedir" file="${ant.file.module_logparser2}"/>
+  
+  <property name="module.jdk.home.logparser2" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.logparser2" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.logparser2" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.logparser2" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="logparser2.output.dir" value="${module.logparser2.basedir}/out/production/LogParser2"/>
+  <property name="logparser2.testoutput.dir" value="${module.logparser2.basedir}/out/test/LogParser2"/>
+  
+  <path id="logparser2.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="logparser2.module.production.classpath">
+    <path refid="${module.jdk.classpath.logparser2}"/>
+    <path refid="library.tomcat_8.5.50.classpath"/>
+  </path>
+  
+  <path id="logparser2.runtime.production.module.classpath">
+    <pathelement location="${logparser2.output.dir}"/>
+  </path>
+  
+  <path id="logparser2.module.classpath">
+    <path refid="${module.jdk.classpath.logparser2}"/>
+    <pathelement location="${logparser2.output.dir}"/>
+    <path refid="library.tomcat_8.5.50.classpath"/>
+  </path>
+  
+  <path id="logparser2.runtime.module.classpath">
+    <pathelement location="${logparser2.testoutput.dir}"/>
+    <pathelement location="${logparser2.output.dir}"/>
+    <path refid="library.tomcat_8.5.50.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.logparser2">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.logparser2">
+    <patternset refid="excluded.from.module.logparser2"/>
+  </patternset>
+  
+  <path id="logparser2.module.sourcepath">
+    <dirset dir="${module.logparser2.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.logparser2" depends="compile.module.logparser2.production,compile.module.logparser2.tests" description="Compile module LogParser2"/>
+  
+  <target name="compile.module.logparser2.production" depends="register.custom.compilers" description="Compile module LogParser2; production classes">
+    <mkdir dir="${logparser2.output.dir}"/>
+    <javac2 destdir="${logparser2.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.logparser2}/javac">
+      <compilerarg line="${compiler.args.logparser2}"/>
+      <bootclasspath refid="logparser2.module.bootclasspath"/>
+      <classpath refid="logparser2.module.production.classpath"/>
+      <src refid="logparser2.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.logparser2"/>
+    </javac2>
+    
+    <copy todir="${logparser2.output.dir}">
+      <fileset dir="${module.logparser2.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.logparser2.tests" depends="register.custom.compilers,compile.module.logparser2.production" description="compile module LogParser2; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.logparser2" description="cleanup module">
+    <delete dir="${logparser2.output.dir}"/>
+    <delete dir="${logparser2.testoutput.dir}"/>
+  </target>
+</project>
