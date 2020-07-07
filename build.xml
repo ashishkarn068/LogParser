@@ -123,7 +123,11 @@
   <target name="init" description="Build initialization">
     <!-- Perform any build initialization in this target -->
   </target>
-  
+
+  <target name="test">
+    <echo>Hello World - Welcome to Apache Ant!</echo>
+  </target>
+
   <target name="clean" depends="clean.module.logparser2" description="cleanup all"/>
   
   <target name="build.modules" depends="init, clean, compile.module.logparser2" description="build all modules"/>
